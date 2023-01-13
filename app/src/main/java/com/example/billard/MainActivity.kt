@@ -3,7 +3,6 @@ package com.example.billard
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 
 
 class MainActivity : Activity() {
@@ -30,7 +29,7 @@ class MainActivity : Activity() {
 
     fun onClick(v: View) {
         drawingView.changeColor()
-        drawingView.invalidate()
+//        drawingView.invalidate()
 //            Toast.makeText(this, "I press my first button",
 //                Toast.LENGTH_LONG).show()
     }

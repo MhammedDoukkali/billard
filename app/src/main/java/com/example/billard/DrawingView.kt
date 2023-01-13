@@ -6,7 +6,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.SurfaceView
 import java.util.*
 
@@ -28,21 +27,11 @@ SurfaceView(context, attributes, defStyleAttr), Runnable {
     val b3 = Ball(random.nextFloat()*500, random.nextFloat()*1000,
         random.nextFloat()*500)
 
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-        backgroundPaint.color = Color.WHITE
-        canvas?.drawRect(50f, 80f, width.toFloat(), height.toFloat(),
-                         backgroundPaint)
-        b1.draw(canvas)
-        b2.draw(canvas)
-        b3.draw(canvas)
-    }
     fun changeColor() {
         b1.changeColor()
         b2.changeColor()
         b3.changeColor()
     }
-
     fun pause() {
         drawing = false
         thread.join()
@@ -52,6 +41,28 @@ SurfaceView(context, attributes, defStyleAttr), Runnable {
         thread = Thread(this)
         thread.start()
     }
+    fun draw() {
+        if (holder.surface.isValid) {
+            canvas = holder.lockCanvas()
+            backgroundPaint.color = Color.WHITE
+            canvas.drawRect(0F, 0F, canvas.width*1F, canvas.height*1F, backgroundPaint)
+            b1.move(canvas)
+            holder.unlockCanvasAndPost(canvas)
+        }
+    }
+
+//    override fun onDraw(canvas: Canvas?) {
+//        super.onDraw(canvas)
+//        backgroundPaint.color = Color.WHITE
+//        canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(),
+//                         backgroundPaint)
+//        b1.draw(canvas)
+//        b2.draw(canvas)
+//        b3.draw(canvas)
+//    }
+
+
+
 
     // MotionEvent report movement
     // onTouchEvent is to track click on the screen
@@ -68,15 +79,7 @@ SurfaceView(context, attributes, defStyleAttr), Runnable {
 //        return true
 //    }
 
-    fun draw() {
-        if (holder.surface.isValid) {
-            canvas = holder.lockCanvas()
-            backgroundPaint.color = Color.WHITE
-            canvas.drawRect(0F, 0F, canvas.width*1F, canvas.height*1F, backgroundPaint)
-            b1.move(canvas)
-            holder.unlockCanvasAndPost(canvas)
-        }
-    }
+
 
     override fun run() {
         while (drawing) {
